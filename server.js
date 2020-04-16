@@ -27,11 +27,9 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    console.log(req.cookies);
     try {
         let token = jwt.verify(req.cookies.access_token, secret);
-        res.send('hello world');
-        //next();
+        res.sendFile("index.html", {root: "."});
     } catch (ex) {
         res.redirect("/login");
     }
@@ -49,33 +47,35 @@ app.get('/makerinfo', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile("login.html", { root: '.' });
+    try {
+        let token = jwt.verify(req.cookies.access_token, secret);
+        res.redirect("/");
+    } catch (ex) {
+        res.sendFile("login.html", { root: '.' });
+    }
+
 });
 
 app.post('/login', (req, res) => {
-    console.log(req.cookies);
     if (!req.body.email) {
-        res.send("Please specify an email");
+        res.send("SPECIFY_EMAIL");
         return;
     }
     if (!req.body.password) {
-        res.send("Please specify an password");
+        res.send("SPECIFY_PASSWORD");
         return;
     }
     if (!user.userExists(req.body.email)) {
-        res.send("Email does not exist");
+        res.send("CHECK_EMAIL");
         return;
     }
     if (!user.passwordOk(req.body.email, req.body.password)) {
-        res.send("Password incorrect");
+        res.send("CHECK_PASSWORD");
         return;
     }
     let token = user.generateToken(req.body.email, secret);
     res.header("Set-Cookie", `access_token=${token}`);
-    res.send({
-        user: req.body.email,
-        token: token
-    });
+    res.send('OK');
 });
 
 app.get('/register', (req, res) => {
@@ -83,23 +83,22 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-    console.log(req.cookies);
     if (!req.body.email) {
-        res.send("Please specify an email");
+        res.send("SPECIFY_EMAIL");
         return;
     }
     if (!req.body.password) {
-        res.send("Please specify an password");
+        res.send("SPECIFY_PASSWORD");
         return;
     }
     if (user.userExists(req.body.email)) {
-        res.send("Email already exists");
+        res.send("EMAIL_EXISTS");
         return;
     }
     let token = user.generateToken(req.body.email, secret);
     user.insertUser(req.body.email, req.body.password);
     res.header("Set-Cookie", `access_token=${token}`);
-    res.redirect("/login");
+    res.send("OK");
 });
 
 app.listen(port, () => console.log(`NodeJS Samen Eten Server is now running at http://localhost:${port}`));
