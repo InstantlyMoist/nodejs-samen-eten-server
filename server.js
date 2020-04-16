@@ -10,7 +10,7 @@ app.use(cookieParser());
 let routes = require("./routes/route.js");
 app.use("/", routes);
 let port = process.env.PORT || 3000;
-let secret = process.env.JWT_SECRET || "hello";
+
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
