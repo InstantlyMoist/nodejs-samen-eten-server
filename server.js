@@ -4,14 +4,13 @@ let jwt = require('jsonwebtoken');
 var cookieParser = require('cookie-parser');
 let moment = require('moment');
 let app = express();
-let user = require("./user");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+let routes = require("./routes/route.js");
+app.use("/", routes);
 let port = process.env.PORT || 3000;
 let secret = process.env.JWT_SECRET || "hello";
-
-console.log(user.userExists("hi"));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -26,7 +25,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
     try {
         let token = jwt.verify(req.cookies.access_token, secret);
         res.sendFile("index.html", {root: "."});
@@ -99,7 +98,7 @@ app.post('/register', (req, res) => {
     user.insertUser(req.body.email, req.body.password);
     res.header("Set-Cookie", `access_token=${token}`);
     res.send("OK");
-});
+});*/
 
 app.listen(port, () => console.log(`NodeJS Samen Eten Server is now running at http://localhost:${port}`));
 
