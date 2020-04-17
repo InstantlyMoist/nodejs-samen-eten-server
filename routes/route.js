@@ -1,13 +1,8 @@
 let express = require('express');
 let router = express.Router();
 
-let login = require("./api/login");
+let api = require("./api/api.js");
 
-router.use("/api/login", login);
-
-router.get('/', function(req, res){  
-    console.log(req.cookies)  
-    res.send("Welcome to Node JS V1");
-});
+router.use("/api", api);
 
 module.exports = router;

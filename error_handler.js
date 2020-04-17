@@ -1,10 +1,10 @@
 let createError = (res, message, code) => {
     let errorObject = {
         statusCode: code,
-        errorMessage: message,
+        message: message,
         time: Date.now()
     }
-    res.status(code).end(errorObject);
+    res.status(code).json(errorObject);
 }
 
 exports.createError = createError;

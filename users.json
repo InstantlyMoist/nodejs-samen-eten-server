@@ -1,1 +1,18 @@
-{"email":"password","kyllian007@gmail.com":"Password123"}
+{
+    "users": [
+        {
+            "firstName": "Kyllian",
+            "lastName": "Warmerdam",
+            "studentNr": 2158151,
+            "email": "kyllian007@gmail.com",
+            "password": "HelloWorld123"
+        },
+        {
+            "firstName": "NotKylian",
+            "lastName": "Warmerdam",
+            "studentNr": 2158151,
+            "email": "hellowrld@gmail.com",
+            "password": "anderPassWord"
+        }
+    ]
+}
